@@ -3,6 +3,8 @@
 namespace App\Tasks\Registry;
 
 use App\Core\Cli\Task\Socket;
+use App\Core\Registry\Exceptions\RegistryException;
+use App\Core\Registry\Input;
 use swoole_server;
 
 class ServerTask extends Socket
@@ -20,6 +22,8 @@ class ServerTask extends Socket
     ];
 
     protected $services = [];
+
+    protected $length = 10;
 
     protected function events()
     {
@@ -51,6 +55,8 @@ class ServerTask extends Socket
      * }
      *
      * output = {
+     *     success:true,
+     *     message:"",
      *     services:[{
      *         service:xxx,
      *         ip:xxx,
@@ -61,12 +67,29 @@ class ServerTask extends Socket
      */
     public function receive(swoole_server $server, $fd, $reactor_id, $data)
     {
-        if ($data = json_decode($data, true)) {
-            $result = [];
-            $server->send($fd, json_encode($data));
-        } else {
-            $server->send($fd, json_encode([]));
+        $success = true;
+        $message = '';
+
+        try {
+            if ($data = json_decode($data, true)) {
+                $service = new Input($data);
+                // 把元素加入到services表相应服务首位
+                $key = $service->service;
+                $this->services[$key] = $service->toArray();
+
+            } else {
+                throw new RegistryException("The data is invalid!");
+            }
+        } catch (\Exception $ex) {
+            $success = false;
+            $message = $ex->getMessage();
         }
+
+        $server->send($fd, json_encode([
+            'success' => $success,
+            'message' => $message,
+            'services' => $this->services,
+        ]));
     }
 
 }

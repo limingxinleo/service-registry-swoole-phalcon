@@ -3,6 +3,8 @@
 namespace App\Tasks\Registry;
 
 use App\Tasks\Task;
+use App\Utils\Registry\Sign;
+use limx\Support\Str;
 use Xin\Cli\Color;
 use swoole_client;
 
@@ -31,9 +33,19 @@ class ClientTask extends Task
         if (!$client->connect($this->ip, $this->port, -1)) {
             exit("connect failed. Error: {$client->errCode}\n");
         }
-        $client->send("hello world\n");
-        echo $client->recv();
+
+        $data = [
+            'service' => 'test2',
+            'ip' => '127.0.0.1',
+            'port' => 11111,
+            'nonce' => Str::random(16),
+        ];
+        $data['sign'] = Sign::sign($data);
+        $client->send(json_encode($data));
+        $result = $client->recv();
         $client->close();
+
+        dump(json_decode($result, true));
     }
 
 }

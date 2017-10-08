@@ -14,6 +14,15 @@ class Sign
     {
         ksort($input);
         $data = http_build_query($input);
-        $key = env('REGISTRY_KEY');
+        $key = env('REGISTRY_KEY', 'HelloWorld');
+
+        return md5(md5($data) . $key);
+    }
+
+    public static function verify($input, $sign)
+    {
+        unset($input['sign']);
+
+        return static::sign($input) === $sign;
     }
 }
