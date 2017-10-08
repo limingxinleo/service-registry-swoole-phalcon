@@ -19,6 +19,8 @@ class ServerTask extends Socket
         'max_request' => 500, // 每个worker进程最大处理请求次数
     ];
 
+    protected $services = [];
+
     protected function events()
     {
         return [
@@ -32,9 +34,39 @@ class ServerTask extends Socket
         // dump(get_included_files()); // 查看不能被平滑重启的文件
     }
 
+    /**
+     * @desc
+     * @author limx
+     * @param swoole_server $server
+     * @param int           $fd
+     * @param int           $reactor_id
+     * @param string        $data
+     *
+     * input = {
+     *     service:xxx,
+     *     ip:xxx,
+     *     port:xxx,
+     *     nonce:xxx,
+     *     sign:xxxx,
+     * }
+     *
+     * output = {
+     *     services:[{
+     *         service:xxx,
+     *         ip:xxx,
+     *         port:xxx,
+     *         weight:xxx
+     *     },...],
+     * }
+     */
     public function receive(swoole_server $server, $fd, $reactor_id, $data)
     {
-        $server->send($fd, time());
+        if ($data = json_decode($data, true)) {
+            $result = [];
+            $server->send($fd, json_encode($data));
+        } else {
+            $server->send($fd, json_encode([]));
+        }
     }
 
 }
