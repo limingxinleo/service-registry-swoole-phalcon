@@ -7,6 +7,9 @@ use swoole_server;
 
 class ServerTask extends Socket
 {
+    // 端口号
+    protected $port = 11521;
+
     protected $config = [
         'pid_file' => ROOT_PATH . '/server.pid',
         'user' => 'nginx',
@@ -31,7 +34,7 @@ class ServerTask extends Socket
 
     public function receive(swoole_server $server, $fd, $reactor_id, $data)
     {
-
+        $server->send($fd, time());
     }
 
 }
