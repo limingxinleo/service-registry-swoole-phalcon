@@ -13,7 +13,7 @@ class ServerTask extends Socket
     protected $port = 11521;
 
     protected $config = [
-        'pid_file' => ROOT_PATH . '/server.pid',
+        'pid_file' => ROOT_PATH . '/socket.pid',
         'daemonize' => false,
         'max_request' => 500, // 每个worker进程最大处理请求次数
     ];
