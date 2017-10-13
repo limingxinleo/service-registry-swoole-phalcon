@@ -14,10 +14,7 @@ class ServerTask extends Socket
 
     protected $config = [
         'pid_file' => ROOT_PATH . '/server.pid',
-        'user' => 'nginx',
-        'group' => 'nginx',
         'daemonize' => false,
-        // 'worker_num' => 4, // cpu核数1-4倍比较合理 不写则为cpu核数
         'max_request' => 500, // 每个worker进程最大处理请求次数
     ];
 
