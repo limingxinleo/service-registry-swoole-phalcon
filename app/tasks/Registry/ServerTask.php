@@ -49,6 +49,7 @@ class ServerTask extends Socket
      *     port:xxx,
      *     nonce:xxx,
      *     sign:xxxx,
+     *     register:false,
      * }
      *
      * output = {
@@ -71,9 +72,10 @@ class ServerTask extends Socket
             if ($data = json_decode($data, true)) {
                 $service = new Input($data);
                 // 把元素加入到services表相应服务首位
-                $key = $service->service;
-                $this->services[$key] = $service->toArray();
-
+                if ($service->register) {
+                    $key = $service->service;
+                    $this->services[$key] = $service->toArray();
+                }
             } else {
                 throw new RegistryException("The data is invalid!");
             }

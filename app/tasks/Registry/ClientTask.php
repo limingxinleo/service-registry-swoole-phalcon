@@ -39,6 +39,7 @@ class ClientTask extends Task
             'ip' => '127.0.0.1',
             'port' => 11111,
             'nonce' => Str::random(16),
+            'register' => true,
         ];
         $data['sign'] = Sign::sign($data);
         $client->send(json_encode($data));

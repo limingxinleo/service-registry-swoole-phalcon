@@ -21,7 +21,8 @@ class InputValidator extends Validator
                 'port',
                 'ip',
                 'nonce',
-                'sign'
+                'sign',
+                'register'
             ],
             new PresenceOf(
                 [

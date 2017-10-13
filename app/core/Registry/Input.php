@@ -21,6 +21,8 @@ class Input implements JsonSerializable
 
     public $ip;
 
+    public $register;
+
     public function __construct($input)
     {
         $validator = new InputValidator();
@@ -35,6 +37,7 @@ class Input implements JsonSerializable
         $this->service = $input['service'];
         $this->port = $input['port'];
         $this->ip = $input['ip'];
+        $this->register = $input['register'];
     }
 
     public function toArray()
