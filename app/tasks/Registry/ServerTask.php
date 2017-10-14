@@ -27,12 +27,20 @@ class ServerTask extends Socket
         return [
             'receive' => [$this, 'receive'],
             'WorkerStart' => [$this, 'workerStart'],
+            'WorkerStop' => [$this, 'workerStop'],
         ];
+    }
+
+    public function workerStop(swoole_server $serv, $workerId)
+    {
+        // 进程结束时，可以持久化当前的服务列表
     }
 
     public function workerStart(swoole_server $serv, $workerId)
     {
         // dump(get_included_files()); // 查看不能被平滑重启的文件
+
+        // 进程开始时，如果存在持久化数据，则取到内存中
     }
 
     /**
