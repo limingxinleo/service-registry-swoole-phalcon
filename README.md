@@ -11,3 +11,6 @@
 
 ## 微服务DEMO 参考
 [github微服务](https://github.com/limingxinleo/service-demo-github.git)
+
+## 注意事项
+* 当worker进程重启时，内存中的服务列表可能丢失，故需要完善自己的服务持久化。
