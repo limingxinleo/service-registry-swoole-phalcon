@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 // | Author: limx <715557344@qq.com> <https://github.com/limingxinleo>
 // +----------------------------------------------------------------------
-namespace App\Core\Registry\Persist;
+namespace App\Core\Registry\Persistent;
 
 use Xin\Redis as Client;
 

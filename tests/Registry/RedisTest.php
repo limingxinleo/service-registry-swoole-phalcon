@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 namespace Registry;
 
-use App\Core\Registry\Persist\Redis;
+use App\Core\Registry\Persistent\Redis;
 
 class RedisTest extends \UnitTestCase
 {
